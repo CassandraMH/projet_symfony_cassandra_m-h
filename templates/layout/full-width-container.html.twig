@@ -1,0 +1,12 @@
+{%  extends "base.html.twig" %}
+
+{%  block body %}
+    {# c'est le block qui vient de base et qu'on surcharge #}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

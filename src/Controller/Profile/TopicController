@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Controller\Profile;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class TopicController extends AbstractController
+{
+    /**
+     * @Route('/profile/topic', name: 'profile_topic')
+     */
+    public function index(): Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('profile/topic/index.html.twig', [
+            'topics' => $user->getTopics(),
+        ]);
+    }
+}

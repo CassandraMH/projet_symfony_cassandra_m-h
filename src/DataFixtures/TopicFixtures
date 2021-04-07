@@ -1,0 +1,59 @@
+<?php
+
+namespace App\DataFixtures;
+
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+use App\Entity\Annonce;
+use Faker\Factory;
+use App\Repository\UserRepository;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+
+
+
+class AnnonceFixture extends Fixture implements DependentFixtureInterface
+{
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
+    public function load(ObjectManager $manager)
+    {
+        $faker = Factory::create('fr_FR');
+        $users = $this->userRepository->findAll();
+        $usersLength = count($users)-1;
+
+
+        for ($i=0; $i < 1000; $i++) {
+            //ID utilisateur aleatoire
+            $randomKey = rand(0, $usersLength);
+            $user = $users[$randomKey];
+
+            $topic = new Topic();
+            $topic->setTitle($faker->words(3, true))
+                ->setText($faker->sentences(3, true))
+                ->setUser($user)
+            ;
+            /*$annonce->setTitle('Titre Fixture')
+                ->setDescription('Description fixture a la con')
+                ->setPrice(1000)
+                ->setIsSold(false)
+            ;*/
+            $manager->persist($topic);
+        }
+
+        $manager->flush();
+
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+        );
+    }
+
+}

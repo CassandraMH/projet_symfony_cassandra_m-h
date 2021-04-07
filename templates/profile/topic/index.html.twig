@@ -1,0 +1,35 @@
+{% extends 'layout/full-width-container.html.twig' %}
+
+{% block title %}Valuable Gif - Mon Compte !{% endblock %}
+
+{% block content %}
+    <h1>Mon espace utilisateur</h1>
+    <div class="row">
+        <a href="{{ path('app_topic_new') }}" class="btn btn-primary">Créer un Topic</a>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for topic in topics %}
+                <tr>
+                    <td>
+                        {{ topic.title }}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_admin_topic_edit', {id: topic.id}) }}" class="btn btn-secondary">Éditer</a>
+                        <form method="post" action="{{ path('app_admin_topic_delete', {id: topic.id}) }}" onsubmit="return confirm('Êtes vous vraiment sûr ?')">
+                            <input name="_method" type="hidden" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ topic.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
